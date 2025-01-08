@@ -3,13 +3,12 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Funnel Display', sans-serif;
     color: #111111;
 }
 
 body
 {
-
 }
 
 i, a
@@ -24,17 +23,17 @@ i, a
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #45997e;
+    background: linear-gradient(135deg, #5cb6ff, #2bffdc);
 }
 
 .wrapper
 {
     width: 95vw;
     height: 95vh;
-    background-color: #f4f4f4;
+    background-color: #111111;
     position: relative;
     padding: 20px;
-    border-radius: 5px
+    border-radius: 20px
 }
 
 .wrapper .top
@@ -67,14 +66,14 @@ i, a
 
 .company-logo img
 {
-    width: 24px;
-    height: 24px;
+    width: 36px;
+    height: 36px;
     object-fit: contain;
 }
 
 .top .material-icons
 {
-    color: #45997e;
+    color: #2bffdc;
 }
 
 .top i
@@ -100,21 +99,32 @@ a:last-of-type
     flex-direction: column;
 }
 
+.content img
+{
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
 .content h1
 {
-    font-family: 'Jersey 10', sans-serif;
+    font-family: 'Funnel Display', sans-serif;
     font-weight: lighter;
-    color: #45997e;
-    font-size: 8rem;
-    margin-bottom: 1.5rem;
-    letter-spacing: 10px;
+    background: linear-gradient(135deg, #5cb6ff, #2bffdc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 6rem;
+    margin-bottom: 3rem;
+    letter-spacing: 14px;
 }
+
 
 .content .search
 {
     position: relative;
-    width: 50vw;
-    height: 6vh;
+    width: 75vw;
+    height: 5vh;
     border-radius: 30px;
     margin-bottom: 3rem;
 }
@@ -132,7 +142,7 @@ a:last-of-type
 
 .material-icons
 {
-    color: #45997e;
+    color: #111111;
 }
 
 .search #attach
