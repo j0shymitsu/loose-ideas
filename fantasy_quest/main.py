@@ -1,6 +1,14 @@
 print("Welcome to Fantasy Quest!")
 
 # Variables
+first_name = "Lane "
+last_name = "Wagner"
+full_name = first_name + last_name
+sentence_start = "You have "
+sentence_end = " health"
+
+player1_health = "1200"
+player2_health = "1100"
 sword_damage = 10
 player_health = 1000
 armor_multiplier = 2
@@ -12,9 +20,11 @@ health_after_attack = player_health - sword_damage
 
 # The best sword variable holds the value of the best sword in the game
 best_sword = "scimitar"
+sword_name, sword_damage, sword_length = "Excalibur", 10, 200
 enemy = None    # Nonetype
 
 # Don't touch below this line
+print(full_name)
 print(f"Lollilfred's health is: {player_health}")
 print(f"Lollilfred is hit by a sword for {sword_damage} damage...")
 print(f"Lollilfred's health is now: {health_after_attack}")
