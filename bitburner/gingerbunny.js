@@ -62,11 +62,10 @@ export async function main(ns)
 
 async function hack(ns, target)
 {
-    ns.print("Hacking server [" + target + "]");
     let hackAmount = await ns.hack(target);
     if(hackAmount != 0)
     {
-        ns.print("Server [" + target + "] has been hacked for $" + hackAmount.toFixed());
+        ns.print("Server [" + target + "] has been hacked for $" + (hackAmount / 1e6).toFixed(2) + "m");
     }
     else
     {
