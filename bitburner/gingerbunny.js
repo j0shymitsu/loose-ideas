@@ -1,7 +1,11 @@
 /** @param {NS} ns */
 export async function main(ns) 
 {
-    const target = "n00dles"
+    // let serverList = [];
+    // serverList = serverList.slice(2)
+    // allSevers(ns, "home")
+
+    let target = "sigma-cosmetics";
     ns.disableLog("ALL");
 
     ns.clearLog();
@@ -10,52 +14,56 @@ export async function main(ns)
     
     while(true)
     {
-        let hackLvl = ns.getHackingLevel()
+        let hackLvl = ns.getHackingLevel();
+        let currentSecurity = ns.getServerSecurityLevel(target);
+        let minSecurity = ns.getServerMinSecurityLevel(target);
         let successfulHackChance = ns.hackAnalyzeChance(target);
-        ns.print("Server [" + target + "] has a hack chance of " + (successfulHackChance * 100).toFixed(2) + "%");
+        let currentMoney = ns.getServerMoneyAvailable(target);
+        let maxMoney = ns.getServerMaxMoney(target);
+        let percentOfMaxMoney = (currentMoney / maxMoney) * 100;
+        
+        ns.print("\n\n");
+        ns.print(target + " has a hack chance of " + (successfulHackChance * 100).toFixed(2) + "%");
+        ns.print(target + " has a security level of " + currentSecurity.toFixed(2));
+        ns.print(target + " currently at " + percentOfMaxMoney.toFixed(2) + "% of maximum growth");
+        ns.print("\n");
 
-        let canHack = (ns.getServerRequiredHackingLevel(target) < hackLvl) ? true : false;    // ternary operator
+        let canHack = ns.getServerRequiredHackingLevel(target) <= hackLvl;    // ternary operator
 
         if(!canHack)
         {   
-            ns.tprint("Insufficient hacking level to hack [" + target + "]. A hacking level of " + ns.getServerRequiredHackingLevel(target) + " is required.");
+            ns.print("Insufficient hacking level to hack [" + target + "]. A hacking level of " + ns.getServerRequiredHackingLevel(target) + " is required.");
             await ns.sleep(1000);
             continue;
         }
         
-        if(successfulHackChance > 0.8)
+        if(currentSecurity > minSecurity * 1.1)
         {
-            if(ns.getServerMoneyAvailable(target) < (ns.getServerMaxMoney(target) * 0.5))
+            ns.print("Weakening server [" + target + "]");
+            ns.print("Time to weaken: " + (ns.getWeakenTime(target) / 1000).toFixed(2) + " seconds.");
+            await ns.weaken(target);
+            await ns.sleep(1000);
+        }
+        else(successfulHackChance > 0.8)
+        {
+            if(currentMoney < (maxMoney * 0.5))
             {
                 ns.print("Growing server [" + target + "]");
-
                 let growAmount = await ns.grow(target);
-                let grownPercentage = (ns.getServerMoneyAvailable(target) / ns.getServerMaxMoney(target)) * 100;
-
+                let grownPercentage = (ns.getServerMoneyAvailable(target) / maxMoney) * 100;
                 ns.print("Server [" + target + "] has grown by: " + growAmount.toFixed(2) + ". Now at " + grownPercentage.toFixed(2) + "% of max.");
-                }
+                await ns.sleep(1000);
+            }
             else
             {
-                ns.print("Unable to weaken server [" + target + "] any further. Attempting hack.");
+                ns.print("Attempting hack on server " + target);
                 await hack(ns, target);
+                await ns.sleep(1000);
             }
-        }
-        else
-        {
-            if(ns.getServerSecurityLevel(target) > (ns.getServerMinSecurityLevel(target) * 1.1))
-            {
-                ns.print("Weakening server [" + target + "]")
-                ns.print("Time to weaken: " + (ns.getWeakenTime(target) / 1000).toFixed(2) + " seconds.")
-                await ns.weaken(target);
-            }
-            else
-            {
-                    ns.print("Unable to weaken server [" + target + "] any further. Attempting hack.");
-                    await hack(ns, target); 
-            }
-        }
+        }      
     }
 }
+
 
 async function hack(ns, target)
 {
@@ -71,3 +79,26 @@ async function hack(ns, target)
     }
     return 0;
 }
+
+// function allSevers(ns, server) 
+// {
+//     let neighbours = ns.scan(server);
+
+//     if (serverList.includes(server)) 
+//     {
+//         return;
+//     }
+
+//     serverList.push(server);
+
+//     for (let neighbour of neighbours) 
+//     {
+//         if (!serverList.includes(neighbour)) 
+//         {
+//             allSevers(neighbour);
+//         }
+//     }
+
+//     serverList.sort((a, b) => ns.getServerRequiredHackingLevel(a) - ns.getServerRequiredHackingLevel(b));
+// }
+
