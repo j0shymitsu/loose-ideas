@@ -21,8 +21,9 @@ export async function main(ns)
         let currentMoney = ns.getServerMoneyAvailable(target);
         let maxMoney = ns.getServerMaxMoney(target);
         let percentOfMaxMoney = (currentMoney / maxMoney) * 100;
-        
-        ns.print("\n\n");
+
+        ns.print("\n")
+        ns.print("--------------------------------");
         ns.print(target + " has a hack chance of " + (successfulHackChance * 100).toFixed(2) + "%");
         ns.print(target + " has a security level of " + currentSecurity.toFixed(2));
         ns.print(target + " currently at " + percentOfMaxMoney.toFixed(2) + "% of maximum growth");
@@ -39,30 +40,24 @@ export async function main(ns)
         
         if(currentSecurity > minSecurity * 1.1)
         {
-            ns.print("Weakening server [" + target + "]");
-            ns.print("Time to weaken: " + (ns.getWeakenTime(target) / 1000).toFixed(2) + " seconds.");
+            ns.print("Weakening server [" + target + "]...");
             await ns.weaken(target);
-            await ns.sleep(1000);
         }
-        else(successfulHackChance > 0.8)
+        else if(currentMoney < (maxMoney * 0.5))
         {
-            if(currentMoney < (maxMoney * 0.5))
-            {
-                ns.print("Growing server [" + target + "]");
-                let growAmount = await ns.grow(target);
-                let grownPercentage = (ns.getServerMoneyAvailable(target) / maxMoney) * 100;
-                ns.print("Server [" + target + "] has grown by: " + growAmount.toFixed(2) + ". Now at " + grownPercentage.toFixed(2) + "% of max.");
-                await ns.sleep(1000);
-            }
-            else
-            {
-                ns.print("Attempting hack on server " + target);
+            ns.print("Growing server [" + target + "]...");
+            await ns.grow(target);
+        }
+        else if(successfulHackChance > 0.8)
+        {
+                ns.print("Attempting hack on server [" + target + "]...");
                 await hack(ns, target);
-                await ns.sleep(1000);
-            }
-        }      
-    }
+        }
+
+        await ns.sleep(1000);
+    }      
 }
+
 
 
 async function hack(ns, target)
